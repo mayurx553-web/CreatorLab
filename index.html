@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CreatorLab - browser-based creator toolkit for audio, visuals and YouTube SEO.">
+  <title>CreatorLab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">C</span><div><b>CreatorLab</b><small>Creator toolkit</small></div></div>
+      <nav>
+        <button class="nav-item active" data-tab="dashboard">⌂ <span>Dashboard</span></button>
+        <button class="nav-item" data-tab="audio">♫ <span>Audio Lab</span></button>
+        <button class="nav-item" data-tab="seo">✦ <span>YouTube SEO</span></button>
+        <button class="nav-item" data-tab="visualizer">◉ <span>Visualizer</span></button>
+        <button class="nav-item" data-tab="tools">▦ <span>Quick Tools</span></button>
+      </nav>
+      <div class="side-note">100% browser-side<br>Nothing is uploaded.</div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div><p class="eyebrow">CREATOR WORKSPACE</p><h1 id="pageTitle">Dashboard</h1></div>
+        <button class="theme-btn" id="themeBtn" title="Toggle theme">☼</button>
+      </header>
+
+      <section id="dashboard" class="tab active">
+        <div class="hero">
+          <div>
+            <p class="eyebrow">YOUR CREATOR COMMAND CENTER</p>
+            <h2>Make. Edit. Publish.</h2>
+            <p>Useful browser tools for audio creators and YouTube workflows — without a backend.</p>
+            <button class="primary" data-open="audio">Open Audio Lab →</button>
+          </div>
+          <div class="hero-orb">♫</div>
+        </div>
+        <div class="cards">
+          <button class="feature-card" data-open="audio"><span>♫</span><b>Audio Lab</b><small>Play, trim, speed-control and export audio.</small></button>
+          <button class="feature-card" data-open="seo"><span>✦</span><b>YouTube SEO</b><small>Create titles, descriptions and keyword sets.</small></button>
+          <button class="feature-card" data-open="visualizer"><span>◉</span><b>Visualizer</b><small>Generate a live canvas visualizer from your audio.</small></button>
+          <button class="feature-card" data-open="tools"><span>▦</span><b>Quick Tools</b><small>Text, ratio, timestamp and JSON utilities.</small></button>
+        </div>
+      </section>
+
+      <section id="audio" class="tab">
+        <div class="section-head"><div><p class="eyebrow">AUDIO LAB</p><h2>Browser audio editor</h2></div></div>
+        <div class="panel">
+          <label class="dropzone" id="dropzone">
+            <input type="file" id="audioFile" accept="audio/*">
+            <strong>Drop an audio file here</strong><span>or tap to choose MP3, WAV, M4A, OGG…</span>
+          </label>
+          <div id="audioInfo" class="file-info hidden"></div>
+          <audio id="audioPlayer" controls class="audio hidden"></audio>
+          <div class="controls">
+            <label>Speed <output id="speedOut">1.00×</output><input id="speed" type="range" min=".5" max="2" step=".01" value="1"></label>
+            <label>Volume <output id="volumeOut">100%</output><input id="volume" type="range" min="0" max="1" step=".01" value="1"></label>
+            <label>Trim start (sec) <output id="startOut">0</output><input id="trimStart" type="number" min="0" value="0"></label>
+            <label>Trim end (sec) <output id="endOut">0</output><input id="trimEnd" type="number" min="0" value="0"></label>
+          </div>
+          <div class="actions">
+            <button class="primary" id="playBtn">Play / Pause</button>
+            <button class="secondary" id="downloadClip">Export WAV clip</button>
+          </div>
+          <p class="hint">Export uses the Web Audio API and works locally in supported modern browsers.</p>
+        </div>
+      </section>
+
+      <section id="seo" class="tab">
+        <div class="section-head"><div><p class="eyebrow">YOUTUBE SEO</p><h2>Generate a publishing pack</h2></div></div>
+        <div class="grid-2">
+          <div class="panel">
+            <label>Song / video name<input id="songName" placeholder="e.g. Kalyani"></label>
+            <label>Artist / creator<input id="artistName" placeholder="e.g. Shreya Ghoshal"></label>
+            <label>Style / keywords<input id="styleName" placeholder="slow reverb, lofi, phonk"></label>
+            <button class="primary full" id="generateSeo">Generate SEO</button>
+          </div>
+          <div class="panel outputs">
+            <label>Title<textarea id="seoTitle" readonly></textarea></label>
+            <label>Description<textarea id="seoDesc" readonly></textarea></label>
+            <label>Keywords<textarea id="seoTags" readonly></textarea></label>
+            <button class="secondary full" data-copy-target="seoTitle">Copy title</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="visualizer" class="tab">
+        <div class="section-head"><div><p class="eyebrow">VISUALIZER</p><h2>Live audio visualizer</h2></div></div>
+        <div class="panel">
+          <canvas id="visualCanvas"></canvas>
+          <div class="visual-actions">
+            <label class="file-button">Choose audio<input type="file" id="visualFile" accept="audio/*"></label>
+            <button class="secondary" id="visualPlay">Play / Pause</button>
+          </div>
+          <audio id="visualAudio" controls class="hidden"></audio>
+        </div>
+      </section>
+
+      <section id="tools" class="tab">
+        <div class="section-head"><div><p class="eyebrow">QUICK TOOLS</p><h2>Small tools, no nonsense</h2></div></div>
+        <div class="tool-grid">
+          <div class="panel tool"><h3>Character Counter</h3><textarea id="counterText" placeholder="Type or paste text…"></textarea><strong id="countResult">0 characters · 0 words</strong></div>
+          <div class="panel tool"><h3>Aspect Ratio</h3><div class="two-input"><input id="ratioW" type="number" placeholder="Width"><input id="ratioH" type="number" placeholder="Height"></div><button class="secondary full" id="ratioBtn">Calculate</button><strong id="ratioResult">—</strong></div>
+          <div class="panel tool"><h3>JSON Formatter</h3><textarea id="jsonInput" placeholder='{"hello":"world"}'></textarea><button class="secondary full" id="jsonBtn">Format JSON</button></div>
+          <div class="panel tool"><h3>Unix Timestamp</h3><input id="timestampInput" type="number" placeholder="e.g. 1789400000"><button class="secondary full" id="timestampBtn">Convert</button><strong id="timestampResult">—</strong></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <div id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
